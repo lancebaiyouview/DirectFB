@@ -167,16 +167,20 @@ static const char *blit_colorkey_frag_src = " \
 uniform sampler2D dfbSampler; \
 uniform "LOWP" vec4   dfbColor; \
 uniform        ivec3  dfbColorkey; \
+uniform        ivec3  dfbColorkeyTolerance; \
 varying "LOWP" vec2   varTexCoord; \
+\
+ivec3 round_down(ivec3 x, ivec3 divisor) \
+{ \
+     return (x / divisor) * divisor; \
+} \
+\
 void main (void) \
 { \
      "HIGHP" vec4 value = texture2D(dfbSampler, varTexCoord); \
 \
-     int r = int(value.r*255.0+0.5); \
-     int g = int(value.g*255.0+0.5); \
-     int b = int(value.b*255.0+0.5); \
-\
-     if (r == dfbColorkey.x && g == dfbColorkey.y && b == dfbColorkey.z) \
+     ivec3 color = ivec3(value.rgb * vec3(255.0) + vec3(0.5)); \
+     if (round_down(color, dfbColorkeyTolerance) == round_down(dfbColorkey, dfbColorkeyTolerance)) \
         discard; \
 \
      gl_FragColor = value * dfbColor; \

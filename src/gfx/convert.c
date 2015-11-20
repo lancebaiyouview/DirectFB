@@ -156,6 +156,23 @@ dfb_pixel_to_color( DFBSurfacePixelFormat  format,
      }
 }
 
+void
+dfb_pixel_tolerance( DFBSurfacePixelFormat  format,
+                     DFBColor              *tolerance )
+{
+     switch (format) {
+          case DSPF_RGB16:
+               tolerance->r = 1<<(8-5);
+               tolerance->g = 1<<(8-6);
+               tolerance->b = 1<<(8-5);
+               break;
+          default:
+               tolerance->r = 1;
+               tolerance->g = 1;
+               tolerance->b = 1;
+     }
+}
+
 unsigned long
 dfb_pixel_from_color( DFBSurfacePixelFormat  format,
                       const DFBColor        *color )

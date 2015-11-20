@@ -164,6 +164,7 @@ gles2_init_shader_programs(GLES2DeviceData *dev)
           dev->progs[i].dfbMVPMatrix = -1;
           dev->progs[i].dfbColor     = -1;
           dev->progs[i].dfbColorkey  = -1;
+          dev->progs[i].dfbColorkeyTolerance  = -1;
           dev->progs[i].dfbTexScale  = -1;
           dev->progs[i].dfbSampler   = -1;
           dev->progs[i].v_flags      =  0;
@@ -325,6 +326,7 @@ gles2_init_shader_programs(GLES2DeviceData *dev)
           GET_UNIFORM_LOCATION(dev, GLES2_BLIT_COLORKEY, dfbTexScale);
           GET_UNIFORM_LOCATION(dev, GLES2_BLIT_COLORKEY, dfbSampler);
           GET_UNIFORM_LOCATION(dev, GLES2_BLIT_COLORKEY, dfbColorkey);
+          GET_UNIFORM_LOCATION(dev, GLES2_BLIT_COLORKEY, dfbColorkeyTolerance);
 
           // For now we always use texture unit 0 (GL_TEXTURE0).
           glUniform1i(dev->progs[GLES2_BLIT_COLORKEY].dfbSampler, 0);
@@ -350,6 +352,7 @@ gles2_init_shader_programs(GLES2DeviceData *dev)
           GET_UNIFORM_LOCATION(dev, GLES2_BLIT_COLORKEY_MAT, dfbTexScale);
           GET_UNIFORM_LOCATION(dev, GLES2_BLIT_COLORKEY_MAT, dfbSampler);
           GET_UNIFORM_LOCATION(dev, GLES2_BLIT_COLORKEY_MAT, dfbColorkey);
+          GET_UNIFORM_LOCATION(dev, GLES2_BLIT_COLORKEY_MAT, dfbColorkeyTolerance);
 
           // For now we always use texture unit 0 (GL_TEXTURE0).
           glUniform1i(dev->progs[GLES2_BLIT_COLORKEY_MAT].dfbSampler, 0);

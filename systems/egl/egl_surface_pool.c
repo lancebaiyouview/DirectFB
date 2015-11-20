@@ -384,7 +384,22 @@ eglAllocateBuffer( CoreSurfacePool       *pool,
          return DFB_FAILURE;
      }
 
-     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface->config.size.w, surface->config.size.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
+     switch (allocation->config.format) {
+         case DSPF_RGB32:
+             glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface->config.size.w, surface->config.size.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
+         case DSPF_ARGB:
+             glTexImage2D( GL_TEXTURE_2D, 0, GL_BGRA_EXT, surface->config.size.w, surface->config.size.h, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, NULL );
+             break;
+         case DSPF_RGB16:
+             glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, surface->config.size.w, surface->config.size.h, 0, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, NULL );
+             break;
+         case DSPF_LUT8:
+             glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface->config.size.w, surface->config.size.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
+             break;
+         default:
+             D_ERROR( "DirectFB/EGL: glTexImage2D() unknown format %x\n" , allocation->config.format);
+             return DFB_UNSUPPORTED;
+     }
 
 //     glEGLImageTargetTexture2DOES( GL_TEXTURE_2D, alloc->eglImage );
      if ((err = eglGetError()) != EGL_SUCCESS) {
@@ -752,11 +767,21 @@ fboWrite( CoreSurfacePool       *pool,
 
      glPixelStorei( GL_UNPACK_ALIGNMENT, 8 );
 
-     if (allocation->config.format == DSPF_ABGR) {
-          glTexSubImage2D(GL_TEXTURE_2D, 0, rect->x, rect->y, rect->w, rect->h, GL_RGBA, GL_UNSIGNED_BYTE, source);
-     }
-     else {
-          glTexSubImage2D(GL_TEXTURE_2D, 0, rect->x, rect->y, rect->w, rect->h, GL_BGRA_EXT, GL_UNSIGNED_BYTE, source);
+     switch (allocation->config.format)
+     {
+         case DSPF_ABGR:
+             glTexSubImage2D(GL_TEXTURE_2D, 0, rect->x, rect->y, rect->w, rect->h, GL_RGBA, GL_UNSIGNED_BYTE, source);
+             break;
+         case DSPF_ARGB:
+             glTexSubImage2D(GL_TEXTURE_2D, 0, rect->x, rect->y, rect->w, rect->h, GL_BGRA_EXT, GL_UNSIGNED_BYTE, source);
+             break;
+         case DSPF_RGB16:
+             glTexSubImage2D(GL_TEXTURE_2D, 0, rect->x, rect->y, rect->w, rect->h, GL_RGB, GL_UNSIGNED_SHORT_5_6_5, source);
+             break;
+         default:
+             D_ERROR( "DirectFB/RGL2D: glTexSubImage2D() unknown format %x\n", allocation->config.format );
+             return DFB_UNSUPPORTED;
+
      }
 
      if ((err = glGetError()) != 0) {

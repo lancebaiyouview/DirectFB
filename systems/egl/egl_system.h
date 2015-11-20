@@ -109,6 +109,7 @@ EGLAPI void EGLAPIENTRY eglCreateGlobalImageBRCM(EGLint width, EGLint height, EG
 #define EGL_PIXEL_FORMAT_XRGB_8888_BRCM     2
 #define EGL_PIXEL_FORMAT_ARGB_8888_BRCM     1
 
+#ifndef _BEGL_DISPPLATFORM_H__ /* This is already defined */
 typedef enum
 {
    /* These formats are render target formats, but cannot be textured from */
@@ -135,6 +136,7 @@ typedef enum
    /* Can be used to return back an invalid format */
    BEGL_BufferFormat_INVALID   
 } BEGL_BufferFormat;
+#endif
 
 
 typedef struct {

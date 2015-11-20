@@ -453,6 +453,10 @@ void                  dfb_pixel_to_color  ( DFBSurfacePixelFormat  format,
                                             unsigned long          pixel,
                                             DFBColor              *ret_color );
 
+void                  dfb_pixel_tolerance ( DFBSurfacePixelFormat  format,
+                                            DFBColor              *ret_color );
+
+
 unsigned long         dfb_pixel_from_color( DFBSurfacePixelFormat  format,
                                             const DFBColor        *color );
 

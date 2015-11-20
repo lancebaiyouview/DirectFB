@@ -450,15 +450,18 @@ gles2_validate_COLORKEY(GLES2DriverData *gdrv,
 
      D_DEBUG_AT(GLES2__2D, "%s()\n", __FUNCTION__);
 
-     /* convert RGB32 color values to int */
-     int r = (state->src_colorkey & 0x00FF0000) >> 16;
-     int g = (state->src_colorkey & 0x0000FF00) >>  8;
-     int b = (state->src_colorkey & 0x000000FF)      ;
+     /* convert color values to int */
+     DFBColor colorkey;
+     DFBColor tolerance;
+     DFBSurfacePixelFormat  format = state->source->config.format;
+     dfb_pixel_to_color(format, state->src_colorkey, &colorkey);
+     dfb_pixel_tolerance(format, &tolerance);
 
      /* send converted color key to shader */
-     glUniform3i( prog->dfbColorkey, r, g, b );
+     glUniform3i( prog->dfbColorkey, colorkey.r, colorkey.g, colorkey.b );
+     glUniform3i( prog->dfbColorkeyTolerance, tolerance.r, tolerance.g, tolerance.b);
 
-     D_DEBUG_AT(GLES2__2D, "  -> loaded colorkey %d %d %d\n", r, g, b);
+     D_DEBUG_AT(GLES2__2D, "  -> loaded colorkey %d %d %d\n", colorkey.r, colorkey.g, colorkey.b);
 
      // Set the flag.
      GLES2_VALIDATE(COLORKEY);
