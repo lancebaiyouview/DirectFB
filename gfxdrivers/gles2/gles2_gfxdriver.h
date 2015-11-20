@@ -76,6 +76,7 @@ typedef struct {
      GLint  dfbMVPMatrix; // location of model-view-projection matrix
      GLint  dfbColor;     // location of global RGBA color
      GLint  dfbColorkey;  // location of colorkey RGB color
+     GLint  dfbColorkeyTolerance;  // location of colorkey RGB color tolerance
      GLint  dfbTexScale;  // location of scale factors to normalized tex coords
      GLint  dfbSampler;   // location of 2D texture sampler
      char  *name;         // program object name for debugging
