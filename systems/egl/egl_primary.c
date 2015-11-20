@@ -406,6 +406,7 @@ primaryUpdateRegion( CoreLayer             *layer,
      if (left_update && !dfb_region_region_intersect( &region, left_update ))
           return DFB_OK;
 
+     eglSurfaceAttrib(egl->eglDisplay, egl->eglSurface, EGL_SWAP_BEHAVIOR, EGL_BUFFER_PRESERVED);
      eglSwapBuffers(egl->eglDisplay, egl->eglSurface);
 
      
