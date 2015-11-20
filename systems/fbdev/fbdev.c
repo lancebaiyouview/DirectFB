@@ -330,7 +330,7 @@ error:
 static void
 dfb_fbdev_get_pci_info( FBDevShared *shared )
 {
-     char  buf[512];
+     char  buf[512+1];
      int   vendor = -1;
      int   model  = -1;
      FILE *fp;

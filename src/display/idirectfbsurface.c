@@ -2574,6 +2574,8 @@ IDirectFBSurface_DrawString( IDirectFBSurface *thiz,
                return ret;
           }
 
+          D_ASSERT( num <= bytes );
+
           /* Calculate string width. */
           for (i=0; i<num; i++) {
                unsigned int   current = indices[i];

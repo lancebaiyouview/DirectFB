@@ -1255,7 +1255,7 @@ DFBResult dfb_config_set( const char *name, const char *value )
                     return DFB_INVARG;
                }
 
-               if (id < 0 || id > D_ARRAY_SIZE(dfb_config->layers)) {
+               if (id < 0 || id >= D_ARRAY_SIZE(dfb_config->layers)) {
                     D_ERROR("DirectFB/Config '%s': ID %d out of bounds!\n", name, id);
                     return DFB_INVARG;
                }
@@ -2455,7 +2455,7 @@ DFBResult dfb_config_init( int *argc, char *(*argv[]) )
 DFBResult dfb_config_read( const char *filename )
 {
      DFBResult ret = DFB_OK;
-     char line[400];
+     char line[400+1];
      FILE *f;
 
      char *slash = 0;
@@ -2491,7 +2491,7 @@ DFBResult dfb_config_read( const char *filename )
           }
 
           /* must copy filename for path, due to const'ness */
-          char nwd[strlen(filename)];
+          char nwd[strlen(filename)+1];
           strcpy( nwd, filename );
           nwd[slash-filename] = 0;
           if (chdir( nwd ))

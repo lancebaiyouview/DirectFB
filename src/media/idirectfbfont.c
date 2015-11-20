@@ -316,6 +316,8 @@ IDirectFBFont_GetStringExtents( IDirectFBFont *thiz,
                return ret;
           }
 
+          D_ASSERT( num <= bytes );
+
           for (i=0; i<num; i++) {
                unsigned int   current = indices[i];
                CoreGlyphData *glyph;
@@ -427,6 +429,8 @@ IDirectFBFont_GetStringWidth( IDirectFBFont *thiz,
                dfb_font_unlock( font );
                return ret;
           }
+
+          D_ASSERT( num <= bytes );
 
           /* Calculate string width. */
           for (i=0; i<num; i++) {
