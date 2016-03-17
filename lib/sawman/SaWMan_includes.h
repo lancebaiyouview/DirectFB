@@ -174,6 +174,10 @@ SaWManWindow_Lookup( CoreDFB       *core,
           return DR_ACCESSDENIED;
      }
 */
+     if (DFB_WINDOW_DESTROYED( window ))
+     {
+         return DR_DESTROYED;
+     }
      *ret_window = (SaWManWindow*) window->window_data;
 
      return DR_OK;
