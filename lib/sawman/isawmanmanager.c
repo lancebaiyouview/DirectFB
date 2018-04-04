@@ -272,10 +272,21 @@ ISaWManManager_InsertWindow( ISaWManManager       *thiz,
      if (!window)
           return DFB_INVARG;
 
+     if (D_PERSISTENT_MAGIC_IS_CLEARED( window ))
+     {
+          D_ERROR( "%s(), window %p has been removed!\n", __FUNCTION__, window );
+          return DFB_INVARG;
+     }
+
      sawman = data->sawman;
 
      D_MAGIC_ASSERT( sawman, SaWMan );
      D_MAGIC_ASSERT( window, SaWManWindow );
+     if (sawrel && D_PERSISTENT_MAGIC_IS_CLEARED( sawrel ))
+     {
+          D_ERROR( "%s(), window %p has been removed!\n", __FUNCTION__, sawrel );
+          sawrel = 0;
+     }
      D_MAGIC_ASSERT_IF( sawrel, SaWManWindow );
 
      return SaWManManager_InsertWindow( data->manager, window, sawrel, relation );
@@ -339,6 +350,15 @@ ISaWManManager_SetWindowConfig ( ISaWManManager           *thiz,
        not yet implemented:
        SWMCF_KEY_SELECTION, SWMCF_CURSOR_FLAGS, SWMCF_CURSOR_RESOLUTION
      */
+
+     if (!sawwin)
+          return DFB_INVARG;
+
+     if (D_PERSISTENT_MAGIC_IS_CLEARED( sawwin ))
+     {
+          D_ERROR( "%s(), window %p has been removed!\n", __FUNCTION__, sawwin );
+          return DFB_INVARG;
+     }
 
      if (flags & ~(SWMCF_ALL - SWMCF_KEY_SELECTION - SWMCF_CURSOR_FLAGS - SWMCF_CURSOR_RESOLUTION))
           return DFB_INVARG;
@@ -476,6 +496,16 @@ ISaWManManager_GetProcessInfo( ISaWManManager     *thiz,
 
      if (!process || (handle == SAWMAN_WINDOW_NONE))
           return DFB_INVARG;
+
+     if (!sawwin)
+          return DFB_INVARG;
+
+     if (D_PERSISTENT_MAGIC_IS_CLEARED( sawwin ))
+     {
+          D_ERROR( "%s(), window %p has been removed!\n", __FUNCTION__, sawwin );
+          process->pid = 0xFFFF;
+          return DR_INVARG;
+     }
 
      sawman = data->sawman;
      D_MAGIC_ASSERT( sawman, SaWMan );

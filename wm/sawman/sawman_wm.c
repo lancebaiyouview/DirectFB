@@ -2335,26 +2335,26 @@ wm_add_window( CoreWindowStack *stack,
      sawwin->process.fusion_id = process->fusion_id;
      sawwin->process.flags     = process->flags;
 
-     D_MAGIC_SET( sawwin, SaWManWindow );
+     D_PERSISTENT_MAGIC_SET( sawwin, SaWManWindow );
 
      if (window->config.options & (DWOP_KEEP_ABOVE | DWOP_KEEP_UNDER)) {
           if (!sawwin->parent) {
                D_ERROR( "SaWMan/WM: Cannot use KEEP_ABOVE/UNDER without a parent!\n" );
-               D_MAGIC_CLEAR( sawwin );
+               D_PERSISTENT_MAGIC_CLEAR( sawwin );
                sawman_unlock( sawman );
                return DFB_UNSUPPORTED;
           }
 
           if (window->config.options & DWOP_KEEP_ABOVE) {
                if (sawman_window_priority(sawwin->parent) > sawman_window_priority(sawwin)) {
-                    D_MAGIC_CLEAR( sawwin );
+                    D_PERSISTENT_MAGIC_CLEAR( sawwin );
                     sawman_unlock( sawman );
                     return DFB_INVARG;
                }
           }
           else {
                if (sawman_window_priority(sawwin->parent) < sawman_window_priority(sawwin)) {
-                    D_MAGIC_CLEAR( sawwin );
+                    D_PERSISTENT_MAGIC_CLEAR( sawwin );
                     sawman_unlock( sawman );
                     return DFB_INVARG;
                }
@@ -2542,7 +2542,7 @@ wm_remove_window( CoreWindowStack *stack,
                     sawwin->parent_window = NULL;
                }
 
-               D_MAGIC_CLEAR( sawwin );
+               D_PERSISTENT_MAGIC_CLEAR( sawwin );
                break;
 
           default:

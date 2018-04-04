@@ -298,6 +298,24 @@ void DIRECT_API direct_assumption( const char *exp,
                                         D_INFO( "Magic '%s' = '%d'\n", #m, D_MAGIC(#m) );       \
                                    } while (0)
 
+#define D_PERSISTENT_MAGIC_SET(o,m)                                                  \
+                                   do {                                              \
+                                        D_ASSERT( (o) != NULL );                     \
+                                        D_ASSUME( (o)->magic != D_MAGIC(#m) );       \
+                                                                                     \
+                                        (o)->magic = D_MAGIC(#m);                    \
+                                   } while (0)
+
+#define D_PERSISTENT_MAGIC_CLEAR(o)                                                  \
+                                   do {                                              \
+                                        D_ASSERT( (o) != NULL );                     \
+                                        D_ASSUME( (o)->magic != 0 );                 \
+                                                                                     \
+                                        (o)->magic = 0;                              \
+                                   } while (0)
+
+#define D_PERSISTENT_MAGIC_IS_CLEARED(o)                                             \
+                                   ((o)->magic == 0)
 
 #if DIRECT_BUILD_DEBUGS
 
